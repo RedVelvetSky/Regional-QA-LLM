@@ -58,7 +58,7 @@ Example item in `data/queries/cz.dev.jsonl`:
 - [ ] Preprocess Wiki database 
 - [ ] Implement RAG pipeline
 - [ ] Fine-tune multilingual LLM on regional datasets
-- [ ] Add friendly interface for querying
+- [ ] Add a friendly interface for querying
 - [ ] Add benchmarks on retrieval accuracy and answer quality
 - [ ] Support additional languages (e.g., SK, UA)
 
