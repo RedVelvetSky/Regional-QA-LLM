@@ -1,4 +1,4 @@
-import answering.distilbert
+import answering.phi
 import evaluation.method_a
 import retrieval.rag_pipeline
 import retrieval.rag_utils
@@ -8,7 +8,7 @@ retrieval_methods = {
 }
 
 answering_methods = {
-    "DistilBERT base SQuAD": answering.distilbert.handle,
+    "Phi-4-mini-instruct": answering.phi.handle,
 }
 
 evaluation_methods = {

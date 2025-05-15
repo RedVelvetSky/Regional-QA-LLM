@@ -58,8 +58,9 @@ def page_retrieval():
         st.stop()
 
     # retrieve context
+    with st.spinner("Retrieving...", show_time=True):
+        ss["context"] = retrieve_fn(ss["question"])
     st.write("**Retrieved context**")
-    ss["context"] = retrieve_fn(ss["question"])
     with st.container(border=True):
         st.write(ss["context"])
 
@@ -77,8 +78,9 @@ def page_answering():
         st.stop()
 
     # answer question
+    with st.spinner("Answering...", show_time=True):
+        ss["pred_answer"] = answering_fn(ss["question"], ss["context"])
     st.write("**Answer**")
-    ss["pred_answer"] = answering_fn(ss["question"], ss["context"])
     with st.container(border=True):
         st.write(ss["pred_answer"])
 
@@ -97,8 +99,9 @@ def page_evaluation():
         st.stop()
 
     # answer question
+    with st.spinner("Evaluating...", show_time=True):
+        ss["eval"] = eval_fn(ss["question"], ss["true_answer"], ss["pred_answer"])
     st.write("**Evaluation**")
-    ss["eval"] = eval_fn(ss["question"], ss["true_answer"], ss["pred_answer"])
     with st.container(border=True):
         st.write(ss["eval"])
 
@@ -116,16 +119,19 @@ def page_e2e():
     if not button:
         st.stop()
 
-    context = retrieve_fn(question)
+    with st.spinner("Retrieving...", show_time=True):
+        context = retrieve_fn(question)
     with st.expander("Retrieved context", expanded=False):
         st.write(context)
 
-    pred_answer = answering_fn(question, context)
+    with st.spinner("Answering...", show_time=True):
+        pred_answer = answering_fn(question, context)
     with st.expander("Answer", expanded=True):
         st.write(pred_answer)
 
     if true_answer:
-        evaluation = eval_fn(question, true_answer, pred_answer)
+        with st.spinner("Evaluating...", show_time=True):
+            evaluation = eval_fn(question, true_answer, pred_answer)
         with st.expander("Evaluation", expanded=False):
             st.write(evaluation)
 

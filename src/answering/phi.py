@@ -21,10 +21,25 @@ def handle(question: str, context: str) -> str:
     tokenizer = AutoTokenizer.from_pretrained(model_path)
 
     messages = [
-        {"role": "system", "content": "You are a helpful AI assistant. Your task is to answer the provided question based on the given context. Respond with the answer only."},
-        {"role": "user", "content": f"Here is the context: ```{context}```"},
-        {"role": "assistant", "content": "Sure! What's the equation? I can help you answer it."},
-        {"role": "user", "content": f"Based on the context, please answer the following question: ```{question}```"},
+        {
+            "role": "system",
+            "content": (
+                "You are an AI assistant. Your task is to answer the user's question. "
+                "1. First, analyze the provided context. "
+                "2. If the context is empty or does not contain the answer, make an educated guess based on your general knowledge. "
+                "3. Provide the final answer prefixed with 'Final Answer: '. "
+                "Example of a context-based response: \n"
+                "Reasoning: The context states that the capital of France is Paris. \n"
+                "Final Answer: Paris"
+                "\n\n"
+                "Example of a guess: \n"
+                "Reasoning: The provided context is empty and does not mention the capital of Mexico. Based on my general knowledge, the capital of Mexico is Mexico City. \n"
+                "Final Answer: Mexico City"
+            ),
+        },
+        {"role": "user", "content": f"Context: ```{context}```"},
+        {"role": "assistant", "content": "Understood. I will analyze the context, or make an educated guess if needed. I will explain my reasoning and then provide the final answer prefixed with 'Final Answer: ' on a new line. What is your question?"},
+        {"role": "user", "content": f"My question is: ```{question}```"},
     ]
 
     pipe = pipeline(
@@ -34,7 +49,7 @@ def handle(question: str, context: str) -> str:
     )
 
     generation_args = {
-        "max_new_tokens": 20,
+        "max_new_tokens": 500,
         "return_full_text": False,
         "temperature": 0.0,
         "do_sample": False,
@@ -42,5 +57,6 @@ def handle(question: str, context: str) -> str:
 
     output = pipe(messages, **generation_args)
     result = output[0]["generated_text"]
+    answer = result.split("Final Answer: ")[-1].strip()
 
-    return result
+    return answer
