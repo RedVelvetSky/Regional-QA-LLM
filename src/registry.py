@@ -1,4 +1,4 @@
-import answering.method_a
+import answering.distilbert
 import evaluation.method_a
 import retrieval.rag_pipeline
 
@@ -7,7 +7,7 @@ retrieval_methods = {
 }
 
 answering_methods = {
-    "QA Method A": answering.method_a.handle,
+    "DistilBERT base SQuAD": answering.distilbert.handle,
 }
 
 evaluation_methods = {

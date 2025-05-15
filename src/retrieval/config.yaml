@@ -1,5 +1,5 @@
-PASSAGE_FILE: "../../data/wiki_passages_with_embeddings.jsonl"
-ARTICLE_JSONL: "../../data/all_wiki_articles.jsonl"
+PASSAGE_FILE: "data/wiki_passages_with_embeddings.jsonl"
+ARTICLE_JSONL: "data/all_wiki_articles.jsonl"
 LANGUAGE: "cs"
 TOP_K: 10
 SCORE_THRESHOLD: 0.75
