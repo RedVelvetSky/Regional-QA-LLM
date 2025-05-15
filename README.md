@@ -54,9 +54,9 @@ Example item in `data/queries/cz.dev.jsonl`:
 
 ## 📌 TODO
 
-- [ ] Select models, download Wiki dataset, and configure DB
-- [ ] Preprocess Wiki database 
-- [ ] Implement RAG pipeline
+- [x] Select models, download Wiki dataset, and configure DB
+- [x] Preprocess Wiki database 
+- [x] Implement RAG pipeline
 - [ ] Fine-tune multilingual LLM on regional datasets
 - [ ] Add a friendly interface for querying
 - [ ] Add benchmarks on retrieval accuracy and answer quality
