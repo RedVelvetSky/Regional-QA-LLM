@@ -1,0 +1,5 @@
+PASSAGE_FILE: "../../data/wiki_passages_with_embeddings.jsonl"
+WIKI_XML_PATH: "cswiki-latest-pages-articles.xml" # change to location of your .xml dump
+LANGUAGE: "cs"
+TOP_K: 10
+SCORE_THRESHOLD: 0.75
