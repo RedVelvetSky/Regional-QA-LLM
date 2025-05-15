@@ -9,6 +9,8 @@ import torch
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModel
 
+from retrieval.rag_utils import rag_to_string
+
 
 def load_config(config_path=None):
     """
@@ -228,6 +230,7 @@ def get_online_wikipedia_content(title, lang="cs"):
 
 
 # === PUBLIC API ===
+@rag_to_string
 def answer_query(query: str, top_k_passages: int = 3) -> dict:
     """
     Answers a user query using a RAG-style pipeline.
