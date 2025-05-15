@@ -13,7 +13,6 @@ def rag_to_string(func):
         local = result_dict["local"]
         wiki_fallback = result_dict["wiki_fallback"]
 
-        print(wiki_fallback)
         if local:
             return local[0]["full_text"]
 
