@@ -8,7 +8,6 @@ import faiss
 import torch
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModel
-from lxml import etree
 
 
 def load_config(config_path=None):
@@ -34,8 +33,8 @@ CONFIG = load_config()
 
 # === CONFIG ===
 PASSAGE_FILE = CONFIG["PASSAGE_FILE"]
-WIKI_XML_PATH = CONFIG["WIKI_XML_PATH"]
 LANGUAGE = CONFIG["LANGUAGE"]
+ARTICLE_JSONL = CONFIG["ARTICLE_JSONL"]
 
 # === LOAD MODEL & TOKENIZER ===
 MODEL_NAME = "intfloat/multilingual-e5-large"
@@ -130,29 +129,48 @@ def _search_faiss(qvec: np.ndarray, top_k: int):
     return results
 
 
-def _get_page_from_xml(xml_path: str, exact_title: str):
+# def _get_page_from_xml(xml_path: str, exact_title: str):
+#     """
+#     Retrieves the full text of a Wikipedia page by its exact title from a MediaWiki XML dump.
+#
+#     :param xml_path: Path to the Wikipedia XML dump file.
+#     :type xml_path: str
+#
+#     :param exact_title: Exact title of the Wikipedia page to retrieve (case-sensitive).
+#     :type exact_title: str
+#
+#     :return: Tuple (title, page_text) if the page is found, otherwise (None, None).
+#     :rtype: tuple (str, str)
+#     """
+#
+#     context = etree.iterparse(xml_path, events=("end",), tag="{*}page")
+#     for _, elem in context:
+#         title = elem.findtext("{*}title")
+#         if title == exact_title:
+#             txt = elem.findtext(".//{*}revision/{*}text") or ""
+#             return title, txt
+#         elem.clear()
+#         while elem.getprevious() is not None:
+#             del elem.getparent()[0]
+#     return None, None
+
+
+def _get_article_from_jsonl(jsonl_path: str, title: str):
     """
-    Retrieves the full text of a Wikipedia page by its exact title from a MediaWiki XML dump.
+    Retrieves the full text of an article by its exact title from a JSONL file.
 
-    :param xml_path: Path to the Wikipedia XML dump file.
-    :type xml_path: str
-
-    :param exact_title: Exact title of the Wikipedia page to retrieve (case-sensitive).
-    :type exact_title: str
-
-    :return: Tuple (title, page_text) if the page is found, otherwise (None, None).
+    :param jsonl_path: Path to the JSONL file containing articles.
+    :type jsonl_path: str
+    :param title: Exact title of the article to retrieve.
+    :type title: str
+    :return: Tuple (title, content) if found, otherwise (None, None).
     :rtype: tuple (str, str)
     """
-
-    context = etree.iterparse(xml_path, events=("end",), tag="{*}page")
-    for _, elem in context:
-        title = elem.findtext("{*}title")
-        if title == exact_title:
-            txt = elem.findtext(".//{*}revision/{*}text") or ""
-            return title, txt
-        elem.clear()
-        while elem.getprevious() is not None:
-            del elem.getparent()[0]
+    with open(jsonl_path, encoding="utf-8") as f:
+        for line in f:
+            obj = json.loads(line)
+            if obj["title"] == title:
+                return obj["title"], obj["content"]
     return None, None
 
 
@@ -185,6 +203,30 @@ def _wiki_search_fallback(query: str, lang: str, top_k: int = 3):
     return [r["title"] for r in data.get("query", {}).get("search", [])]
 
 
+def get_online_wikipedia_content(title, lang="cs"):
+    """
+    Fetches the full wikitext content of a Wikipedia article by title from Wikipedia API.
+    :param title: Wikipedia article title (string)
+    :param lang: Language code (default: "cs" for Czech)
+    :return: str (wikitext or empty string)
+    """
+    url = f"https://{lang}.wikipedia.org/w/api.php"
+    params = {
+        "action": "query",
+        "prop": "extracts",
+        "titles": title,
+        "format": "json",
+        "explaintext": True,  # Get plain text (no markup)
+        "redirects": 1,
+    }
+    resp = requests.get(url, params=params).json()
+    pages = resp.get("query", {}).get("pages", {})
+    if not pages:
+        return ""
+    page = next(iter(pages.values()))
+    return page.get("extract", "") or ""
+
+
 # === PUBLIC API ===
 def answer_query(query: str, top_k_passages: int = 3) -> dict:
     """
@@ -209,9 +251,10 @@ def answer_query(query: str, top_k_passages: int = 3) -> dict:
     # Always return top_k_passages (or as many as possible)
     results = []
     for hit in top_hits:
-        full_title, full_text = _get_page_from_xml(
-            WIKI_XML_PATH, hit["title"].replace("_", " ")
-        )
+        # full_title, full_text = _get_page_from_xml(
+        #     WIKI_XML_PATH, hit["title"].replace("_", " ")
+        # )
+        full_title, full_text = _get_article_from_jsonl(ARTICLE_JSONL, hit["title"])
         results.append(
             {
                 "title": full_title,
@@ -224,9 +267,10 @@ def answer_query(query: str, top_k_passages: int = 3) -> dict:
     # Always include Wikipedia live search fallback (top_k matches)
     candidates = []
     for title in _wiki_search_fallback(query, LANGUAGE, top_k=top_k_passages):
-        t, txt = _get_page_from_xml(WIKI_XML_PATH, title)
+        # Fetch directly from Wikipedia online
+        txt = get_online_wikipedia_content(title, lang=LANGUAGE)
         if txt:
-            candidates.append({"title": t, "full_text": txt})
+            candidates.append({"title": title, "full_text": txt})
 
     return {
         "query": query,
