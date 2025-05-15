@@ -3,7 +3,7 @@ import evaluation.method_a
 import retrieval.rag_pipeline
 
 retrieval_methods = {
-    "Retrieval Method A": retrieval.method_a.handle,
+    "Vlad's RAG": retrieval.rag_pipeline.answer_query,
 }
 
 answering_methods = {
