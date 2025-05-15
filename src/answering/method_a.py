@@ -1,11 +1,12 @@
-def handle(question: str, context: str) -> str:
-    """
-    Args:
-        question: Question to be answered.
-        context: Context to be used for answering the question.
+from src.retrieval.rag_pipeline import answer_query
 
-    Returns:
-        Answer to the question.
-    """
+result = answer_query("Které řeky protékají Brnem?")
+print("Local RAG answers:")
+for item in result["local"]:
+    print(f"Title: {item['title']} | Score: {item['score']:.3f}")
+    print(item['passage'][:200], "\n")
 
-    return "DUMMY ANSWER"
+print("\nWikipedia Fallback:")
+for item in result["wiki_fallback"]:
+    print(f"Title: {item['title']}")
+    print(item['full_text'][:200], "\n")
