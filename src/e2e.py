@@ -20,7 +20,7 @@ a_key = config["data"]["answer_key"]
 os.makedirs(os.path.dirname(config["output_path"]), exist_ok=True)
 
 with jsonlines.open(config["data"]["path"]) as reader:
-    with jsonlines.open(config["output_path"], mode="w") as writer:
+    with jsonlines.open(config["output_path"], mode="w", flush=True) as writer:
 
         for item in reader:
             question = item[q_key]
