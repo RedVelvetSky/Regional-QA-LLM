@@ -54,13 +54,34 @@ Based on these criteria, provide an overall quality score from 1 to 5:
 2: Poor - The answer has significant inaccuracies or relevance issues.
 3: Fair - The answer is partially correct and relevant but has notable flaws or omissions.
 4: Good - The answer is mostly correct and relevant, with only minor issues.
-5: Excellent - The answer is accurate, relevant, comprehensive, and well-written.
+5: Excellent - The answer is accurate, relevant, comprehensive, and well-written exact match.
 
 Provide your evaluation as a JSON object with one key: "score" (an integer from 1 to 5).
 
-Example #1: {{"score": 1}}
-Example #2: {{"score": 3}}
-Example #3: {{"score": 5}}
+Example #1:
+```
+{{"score": 1}} Explanation: The answer stated, "The capital of France is Berlin." This is factually incorrect and names the capital of a different country.
+```
+
+Example #2:
+```
+{{"score": 2}} Explanation: The answer stated, "France has many important cities like Lyon and Marseille, and one of them is the capital." This is vague, doesn't directly answer the question, and omits the actual capital.
+```
+
+Example #3:
+```
+{{"score": 3}} Explanation: The answer "As of my last update in 2023, there are two capital cities in France: Paris and Berlin." is partially incorrect. Only Paris is the capital of France.
+```
+
+Example #4:
+```
+{{"score": 4}} Explanation: The answer stated, "Pari." While this is a common colloquial name for the capital, it's not the complete and formal name, and the spelling is incorrect.
+```
+
+Example #5:
+```
+{{"score": 5}} Explanation: The answer "Paris" is accurate. It directly answers the question and is exacty matching the reference answer.
+```
 
 JSON Evaluation:
 """
