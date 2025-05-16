@@ -8,7 +8,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 def evaluate_rag_answers_bertscore(candidate_answer, reference_answer):
     model_type = "xlm-roberta-large"
-    P, R, F1 = score([candidate_answer], [reference_answer], model_type=model_type, device="cpu")
+    P, R, F1 = score([candidate_answer], [reference_answer], model_type=model_type, device="gpu")
     return {
         "P": P.item(),
         "R": R.item(),
