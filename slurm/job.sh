@@ -1,5 +1,4 @@
 #!/bin/bash
-#SBATCH --job-name=data-syrup-evaluate
 #SBATCH --partition=gpu
 #SBATCH --output="logs/J-%x.out"
 #SBATCH --error="logs/J-%x.out"

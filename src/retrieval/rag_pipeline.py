@@ -174,7 +174,7 @@ def _get_article_from_jsonl(jsonl_path: str, title: str):
     return None, None
 
 
-def _wiki_search_fallback(query: str, lang: str, top_k: int = 3):
+def _wiki_search_fallback(query: str, lang: str, top_k: int = 1):
     """
     Searches Wikipedia using the REST API for relevant page titles matching a query.
 

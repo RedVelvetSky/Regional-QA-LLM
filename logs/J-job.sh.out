@@ -1,0 +1,50 @@
+SLURM WORKLOAD START: Fri May 16 20:34:47 CEST 2025
+Fri May 16 20:34:47 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 550.54.14              Driver Version: 550.54.14      CUDA Version: 12.4     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla V100-SXM2-32GB           On  |   00000000:61:00.0 Off |                    0 |
+| N/A   33C    P0             43W /  300W |       0MiB /  32768MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:11<00:11, 11.09s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:17<00:00,  8.37s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:17<00:00,  8.78s/it]
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:11<00:11, 11.49s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:17<00:00,  8.42s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:17<00:00,  8.88s/it]
+Device set to use cuda:0
+/home/chutommy/npfl140/.venv/lib/python3.12/site-packages/transformers/generation/configuration_utils.py:631: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.0` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+{'question': 'Pro jaké divadlo skládal Karel Plíhal?', 'true_answer': 'Pro Moravské divadlo Olomouc.', 'pred_answer': 'Karel Plíhal has composed music for the Moravské divadlo Olomouc.', 'evaluation': {'BERTScore': {'P': 0.8670875430107117, 'R': 0.9564940333366394, 'F1': 0.9095990657806396}, 'Phi4MiniLLMScore': 5, 'chrF': {'score': 70.97916910734698, 'char_order': 6, 'word_order': 0, 'beta': 2}, 'rougeL': {'precision': 0.75, 'recall': 0.2727272727272727, 'fmeasure': 0.39999999999999997}}}
+{'question': 'Z kterého muzikálu pochází největší hit zpěvačky Jany Petrů?', 'true_answer': 'Z muzikálu Starci na chmelu.', 'pred_answer': 'Den je krásný', 'evaluation': {'BERTScore': {'P': 0.8125255107879639, 'R': 0.7872148752212524, 'F1': 0.7996699810028076}, 'Phi4MiniLLMScore': 1, 'chrF': {'score': 3.8940809968847354, 'char_order': 6, 'word_order': 0, 'beta': 2}, 'rougeL': {'precision': 0.0, 'recall': 0.0, 'fmeasure': 0.0}}}
+{'question': 'Jak se jmenuje ministryně zahraničí Spojených států původem z Česka?', 'true_answer': 'Madeleine Albrightová.', 'pred_answer': 'Madeleine Albrightová', 'evaluation': {'BERTScore': {'P': 0.8680402636528015, 'R': 0.8451744318008423, 'F1': 0.8564547896385193}, 'Phi4MiniLLMScore': 5, 'chrF': {'score': 95.59018445666324, 'char_order': 6, 'word_order': 0, 'beta': 2}, 'rougeL': {'precision': 1.0, 'recall': 1.0, 'fmeasure': 1.0}}}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:11<00:11, 11.48s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:17<00:00,  8.41s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:17<00:00,  8.87s/it]
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:11<00:11, 11.64s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:17<00:00,  8.50s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:17<00:00,  8.97s/it]
+Device set to use cuda:0
+/home/chutommy/npfl140/.venv/lib/python3.12/site-packages/transformers/generation/configuration_utils.py:631: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.0` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+{'question': 'Pro jaké divadlo skládal Karel Plíhal?', 'true_answer': 'Pro Moravské divadlo Olomouc.', 'pred_answer': 'Karel Plíhal composed music for the National Theatre in Prague.', 'evaluation': {'BERTScore': {'P': 0.8441635370254517, 'R': 0.8718027472496033, 'F1': 0.8577606081962585}, 'Phi4MiniLLMScore': 2, 'chrF': {'score': 11.67248832427022, 'char_order': 6, 'word_order': 0, 'beta': 2}, 'rougeL': {'precision': 0.0, 'recall': 0.0, 'fmeasure': 0.0}}}
+{'question': 'Z kterého muzikálu pochází největší hit zpěvačky Jany Petrů?', 'true_answer': 'Z muzikálu Starci na chmelu.', 'pred_answer': 'The most famous song by Jana Petrů is "Kde domů," which is from the musical "Cesta."', 'evaluation': {'BERTScore': {'P': 0.8177240490913391, 'R': 0.8494036793708801, 'F1': 0.8332628607749939}, 'Phi4MiniLLMScore': 2, 'chrF': {'score': 10.66951111894437, 'char_order': 6, 'word_order': 0, 'beta': 2}, 'rougeL': {'precision': 0.0, 'recall': 0.0, 'fmeasure': 0.0}}}
+{'question': 'Jak se jmenuje ministryně zahraničí Spojených států původem z Česka?', 'true_answer': 'Madeleine Albrightová.', 'pred_answer': 'As of my last update in 2023, there is no U.S. Secretary of State of Czech origin. The current Secretary of State, Antony Blinken, has parents of Czech origin, but he himself is not of Czech origin.', 'evaluation': {'BERTScore': {'P': 0.7886848449707031, 'R': 0.8778148889541626, 'F1': 0.8308663368225098}, 'Phi4MiniLLMScore': 5, 'chrF': {'score': 8.879951538187573, 'char_order': 6, 'word_order': 0, 'beta': 2}, 'rougeL': {'precision': 0.0, 'recall': 0.0, 'fmeasure': 0.0}}}
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:11<00:11, 11.33s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:17<00:00,  8.40s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:17<00:00,  8.84s/it]
+Device set to use cuda:0
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:11<00:11, 11.58s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:18<00:00,  8.56s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:18<00:00,  9.02s/it]
+Device set to use cuda:0
+/home/chutommy/npfl140/.venv/lib/python3.12/site-packages/transformers/generation/configuration_utils.py:631: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.0` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+{'question': 'Pro jaké divadlo skládal Karel Plíhal?', 'true_answer': 'Pro Moravské divadlo Olomouc.', 'pred_answer': 'Karel Plíhal has composed music for the Moravské divadlo Olomouc.', 'evaluation': {'BERTScore': {'P': 0.8670875430107117, 'R': 0.9564940333366394, 'F1': 0.9095990657806396}, 'Phi4MiniLLMScore': 5, 'chrF': {'score': 70.97916910734698, 'char_order': 6, 'word_order': 0, 'beta': 2}, 'rougeL': {'precision': 0.75, 'recall': 0.2727272727272727, 'fmeasure': 0.39999999999999997}}}
+{'question': 'Z kterého muzikálu pochází největší hit zpěvačky Jany Petrů?', 'true_answer': 'Z muzikálu Starci na chmelu.', 'pred_answer': 'The greatest hit of Jana Petrů, "Den je krásný," is from the first Czech musical "Starci na chmelu."', 'evaluation': {'BERTScore': {'P': 0.832166850566864, 'R': 0.8868952989578247, 'F1': 0.8586599230766296}, 'Phi4MiniLLMScore': 5, 'chrF': {'score': 41.14640286840948, 'char_order': 6, 'word_order': 0, 'beta': 2}, 'rougeL': {'precision': 0.5, 'recall': 0.15789473684210525, 'fmeasure': 0.23999999999999996}}}
+{'question': 'Jak se jmenuje ministryně zahraničí Spojených států původem z Česka?', 'true_answer': 'Madeleine Albrightová.', 'pred_answer': 'Madeleine Albrightová', 'evaluation': {'BERTScore': {'P': 0.8680402636528015, 'R': 0.8451744318008423, 'F1': 0.8564547896385193}, 'Phi4MiniLLMScore': 5, 'chrF': {'score': 95.59018445666324, 'char_order': 6, 'word_order': 0, 'beta': 2}, 'rougeL': {'precision': 1.0, 'recall': 1.0, 'fmeasure': 1.0}}}
+TIME TAKEN: 00:05:19
+SLURM WORKLOAD FINISH: Fri May 16 20:40:06 CEST 2025

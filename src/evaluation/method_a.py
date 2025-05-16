@@ -8,12 +8,29 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 def evaluate_rag_answers_bertscore(candidate_answer, reference_answer):
     model_type = "xlm-roberta-large"
-    P, R, F1 = score([candidate_answer], [reference_answer], model_type=model_type, device="gpu")
+    P, R, F1 = score([candidate_answer], [reference_answer], model_type=model_type, device="cuda")
     return {
         "P": P.item(),
         "R": R.item(),
         "F1": F1.item(),
     }
+
+
+model_path = "microsoft/Phi-4-mini-instruct"
+model = AutoModelForCausalLM.from_pretrained(
+    model_path,
+    device_map="auto",
+    torch_dtype="auto",
+    trust_remote_code=True,
+)
+tokenizer = AutoTokenizer.from_pretrained(model_path)
+pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
+generation_args = {
+    "max_new_tokens": 10,
+    "return_full_text": False,
+    "temperature": 0.0,
+    "do_sample": False,
+}
 
 
 def evaluate_with_llm_judge(question, reference_answer, predicted_answer):
@@ -47,22 +64,6 @@ Example #3: {{"score": 5}}
 
 JSON Evaluation:
 """
-
-    model_path = "microsoft/Phi-4-mini-instruct"
-    model = AutoModelForCausalLM.from_pretrained(
-        model_path,
-        device_map="auto",
-        torch_dtype="auto",
-        trust_remote_code=True,
-    )
-    tokenizer = AutoTokenizer.from_pretrained(model_path)
-    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
-    generation_args = {
-        "max_new_tokens": 10,
-        "return_full_text": False,
-        "temperature": 0.0,
-        "do_sample": False,
-    }
 
     output = pipe(prompt, **generation_args)
     result = output[0]["generated_text"]
