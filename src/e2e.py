@@ -39,7 +39,7 @@ with jsonlines.open(config["data"]["path"]) as reader:
             o = {
                 "question": question,
                 "true_answer": true_answer,
-                # "context": context,
+                "context": context,
                 "pred_answer": pred_answer,
                 "evaluation": evaluation,
             }

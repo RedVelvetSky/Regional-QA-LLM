@@ -26,7 +26,7 @@ model = AutoModelForCausalLM.from_pretrained(
 tokenizer = AutoTokenizer.from_pretrained(model_path)
 pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
 generation_args = {
-    "max_new_tokens": 10,
+    "max_new_tokens": 200,
     "return_full_text": False,
     "temperature": 0.0,
     "do_sample": False,
@@ -71,7 +71,10 @@ JSON Evaluation:
     match = re.search(pattern, result)
     if not match:
         return -1
-    return int(match.group(1))
+    return {
+        "score": int(match.group(1)),
+        "result": result,
+    }
 
 
 def evaluate_chrf(true_answer, pred_answer):
@@ -81,9 +84,14 @@ def evaluate_chrf(true_answer, pred_answer):
 
 
 def evaluate_rougeL(true_answer, pred_answer):
-    scorer = rouge_scorer.RougeScorer(["rougeL"], use_stemmer=True)
-    scores = scorer.score(pred_answer, true_answer)["rougeL"]._asdict()
-    return scores
+    scorer = rouge_scorer.RougeScorer(["rouge1", "rougeL"], use_stemmer=True)
+    scores = scorer.score(pred_answer, true_answer)
+    s1 = scores["rouge1"]._asdict()
+    s2 = scores["rougeL"]._asdict()
+    return {
+        "rouge1": s1,
+        "rougeL": s2,
+    }
 
 
 def handle(question: str, true_answer: str, pred_answer: str) -> dict:
