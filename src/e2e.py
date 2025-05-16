@@ -1,4 +1,5 @@
 from registry import answering_methods, evaluation_methods, retrieval_methods
+from retrieval.rag_pipeline import _get_article_from_jsonl
 import jsonlines
 import json
 import sys
@@ -23,8 +24,13 @@ with jsonlines.open(config["data"]["path"]) as reader:
         for item in reader:
             question = item[q_key]
             true_answer = item[a_key]
+            true_article = item["wikititle"]
 
-            context = retrieve_fn(question)
+            if config["rag_type"] == "correct":
+                context = _get_article_from_jsonl("data/all_wiki_articles.jsonl", true_article)
+            else:
+                context = retrieve_fn(question)
+
             pred_answer = answer_fn(question, context)
             evaluation = eval_fn(question, true_answer, pred_answer)
 
@@ -37,3 +43,4 @@ with jsonlines.open(config["data"]["path"]) as reader:
                     "evaluation": evaluation,
                 }
             )
+            break

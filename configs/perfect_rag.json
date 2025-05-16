@@ -1,0 +1,12 @@
+{
+    "retrieval_method": "No RAG",
+    "answering_method": "Phi-4-mini-instruct",
+    "evaluation_method": "Method A",
+    "data": {
+        "path": "data/CZ.dev.jsonl",
+        "question_key": "question_orig",
+        "answer_key": "answer_orig"
+    },
+    "output_path": "outputs/rag.jsonl",
+    "rag_type": "correct"
+}

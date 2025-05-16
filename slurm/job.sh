@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH --job-name=data-syrup-job1
+#SBATCH --job-name=data-syrup-evaluate
 #SBATCH --partition=gpu
-#SBATCH --output="J-%x.out"
-#SBATCH --error="J-%x.out"
+#SBATCH --output="logs/J-%x.out"
+#SBATCH --error="logs/J-%x.out"
 #SBATCH --gres=gpu:1
 
 echo "SLURM WORKLOAD START: $(date)"
@@ -13,7 +13,9 @@ nvidia-smi
 module load Python/3.12.3-GCCcore-13.3.0
 source .venv/bin/activate
 
-python src/e2e.py configs/job1.json
+python src/e2e.py configs/rag.json
+python src/e2e.py configs/no_rag.json
+python src/e2e.py configs/perfect_rag.json
 
 deactivate
 end=$(date +%s)
