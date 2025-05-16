@@ -9,7 +9,11 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 def evaluate_rag_answers_bertscore(candidate_answer, reference_answer):
     model_type = "xlm-roberta-large"
     P, R, F1 = score([candidate_answer], [reference_answer], model_type=model_type, device="cpu")
-    return {"P": P, "R": R, "F1": F1}
+    return {
+        "P": P.item(),
+        "R": R.item(),
+        "F1": F1.item(),
+    }
 
 
 def evaluate_with_llm_judge(question, reference_answer, predicted_answer):
