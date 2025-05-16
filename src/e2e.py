@@ -22,7 +22,7 @@ os.makedirs(os.path.dirname(config["output_path"]), exist_ok=True)
 with jsonlines.open(config["data"]["path"]) as reader:
     with jsonlines.open(config["output_path"], mode="w") as writer:
 
-        i = 5 # todo: remove
+        i = 0 # todo: remove
 
         for item in reader:
             question = item[q_key]
@@ -47,6 +47,6 @@ with jsonlines.open(config["data"]["path"]) as reader:
                 }
             )
 
-            i -= 1       # todo: remove
-            if i <= 0:   # todo: remove
+            i += 1       # todo: remove
+            if i == 3:   # todo: remove
                 break    # todo: remove
