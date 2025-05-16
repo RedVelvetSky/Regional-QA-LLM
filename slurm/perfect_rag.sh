@@ -1,4 +1,5 @@
 #!/bin/bash
+#SBATCH --job-name=job3
 #SBATCH --partition=gpu
 #SBATCH --output="logs/J-%x.out"
 #SBATCH --error="logs/J-%x.out"
@@ -12,8 +13,6 @@ nvidia-smi
 module load Python/3.12.3-GCCcore-13.3.0
 source .venv/bin/activate
 
-python src/e2e.py configs/rag.json
-python src/e2e.py configs/no_rag.json
 python src/e2e.py configs/perfect_rag.json
 
 deactivate
