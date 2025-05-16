@@ -31,6 +31,7 @@ with jsonlines.open(config["data"]["path"]) as reader:
                 context = _get_article_from_jsonl("data/all_wiki_articles.jsonl", true_article)
             else:
                 context = retrieve_fn(question)
+            context = context[:16384]
 
             pred_answer = answer_fn(question, context)
             evaluation = eval_fn(question, true_answer, pred_answer)
