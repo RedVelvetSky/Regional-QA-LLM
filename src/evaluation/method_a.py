@@ -1,4 +1,6 @@
 import re
+from rouge_score import rouge_scorer
+import evaluate
 
 from bert_score import score
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
@@ -7,7 +9,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 def evaluate_rag_answers_bertscore(candidate_answer, reference_answer):
     model_type = "xlm-roberta-large"
     P, R, F1 = score([candidate_answer], [reference_answer], model_type=model_type, device="cpu")
-    return F1.item()
+    return {"P": P, "R": R, "F1": F1}
 
 
 def evaluate_with_llm_judge(question, reference_answer, predicted_answer):
@@ -67,6 +69,18 @@ JSON Evaluation:
     return int(match.group(1))
 
 
+def evaluate_chrf(true_answer, pred_answer):
+    chrf = evaluate.load("chrf")
+    results = chrf.compute(predictions=[pred_answer], references=[true_answer])
+    return results
+
+
+def evaluate_rougeL(true_answer, pred_answer):
+    scorer = rouge_scorer.RougeScorer(["rougeL"], use_stemmer=True)
+    scores = scorer.score(pred_answer, true_answer)["rougeL"]._asdict()
+    return scores
+
+
 def handle(question: str, true_answer: str, pred_answer: str) -> dict:
     """
     Args:
@@ -80,8 +94,12 @@ def handle(question: str, true_answer: str, pred_answer: str) -> dict:
 
     bertscore = evaluate_rag_answers_bertscore(pred_answer, true_answer)
     llmscore = evaluate_with_llm_judge(question, true_answer, pred_answer)
+    chrfscore = evaluate_chrf(true_answer, pred_answer)
+    rougelscore = evaluate_rougeL(true_answer, pred_answer)
 
     return {
         "BERTScore": bertscore,
         "Phi4MiniLLMScore": llmscore,
+        "chrF": chrfscore,
+        "rougeL": rougelscore,
     }
