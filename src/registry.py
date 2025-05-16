@@ -12,5 +12,5 @@ answering_methods = {
 }
 
 evaluation_methods = {
-    "Evaluation Method A": evaluation.method_a.handle,
+    "Method A": evaluation.method_a.handle,
 }
