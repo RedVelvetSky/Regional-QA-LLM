@@ -21,6 +21,9 @@ os.makedirs(os.path.dirname(config["output_path"]), exist_ok=True)
 
 with jsonlines.open(config["data"]["path"]) as reader:
     with jsonlines.open(config["output_path"], mode="w") as writer:
+
+        i = 5 # todo: remove
+
         for item in reader:
             question = item[q_key]
             true_answer = item[a_key]
@@ -43,4 +46,7 @@ with jsonlines.open(config["data"]["path"]) as reader:
                     "evaluation": evaluation,
                 }
             )
-            break
+
+            i -= 1       # todo: remove
+            if i <= 0:   # todo: remove
+                break    # todo: remove

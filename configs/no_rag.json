@@ -7,6 +7,6 @@
         "question_key": "question_orig",
         "answer_key": "answer_orig"
     },
-    "output_path": "outputs/rag.jsonl",
+    "output_path": "outputs/no_rag.jsonl",
     "rag_type": "none"
 }
