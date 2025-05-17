@@ -32,10 +32,21 @@ def compare_strange_results(results):
             ...
 
 
+def find_missing_context(results):
+    czech_data = list(jsonlines.open("data/CZ.dev.jsonl"))
+
+    for line, czech in zip(results["perfect_rag.jsonl"], czech_data):
+        if not line["context"][0]:
+            print(czech["wikititle"])
+
+
 def main():
     results = {}
     for file in files:
         results[file.split("/")[-1]] = list(jsonlines.open(file))
+
+    compare_strange_results(results)
+    find_missing_context(results)
 
     for file in results:
         print(file)

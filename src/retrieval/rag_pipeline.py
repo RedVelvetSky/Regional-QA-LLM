@@ -1,6 +1,7 @@
 import json
 import os
 import yaml
+import re
 
 import numpy as np
 import requests
@@ -166,6 +167,8 @@ def _get_article_from_jsonl(jsonl_path: str, title: str):
     :return: Tuple (title, content) if found, otherwise (None, None).
     :rtype: tuple (str, str)
     """
+
+    title = re.sub(r"[^\w\d.-]", "_", title)
     with open(jsonl_path, encoding="utf-8") as f:
         for line in f:
             obj = json.loads(line)
