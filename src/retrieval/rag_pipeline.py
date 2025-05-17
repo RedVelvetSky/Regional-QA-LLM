@@ -230,6 +230,38 @@ def get_online_wikipedia_content(title, lang="cs"):
     return page.get("extract", "") or ""
 
 
+def get_article_equivalent(wikititle: str, orig_lang: str="cs", target_lang: str="en"):
+    """
+    Returns the equivalent article title in the target language.
+
+    :param wikititle: Title of the article in the original language.
+    :type wikititle: str
+
+    :param orig_lang: Language code of the original language (e.g., "cs" for Czech).
+    :type orig_lang: str
+
+    :param target_lang: Language code of the target language (e.g., "en" for English).
+    :type target_lang: str
+
+    :return: Equivalent article title in the target language or None if not found.
+    :rtype: str or None
+    """
+    url = f"https://www.wikidata.org/w/api.php"
+    params = {
+        "action": "wbgetentities",
+        "sites": orig_lang + "wiki",
+        "titles": wikititle,
+        "languages": target_lang,
+        "format": "json",
+    }
+    resp = requests.get(url, params=params).json()
+    try:
+        new_title = list(resp["entities"].values())[0]["sitelinks"][target_lang + "wiki"]["title"]
+    except:
+        return None
+    return new_title
+
+
 # === PUBLIC API ===
 def answer_query(query: str, top_k_passages: int = 3) -> dict:
     """
