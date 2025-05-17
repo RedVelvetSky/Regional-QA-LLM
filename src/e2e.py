@@ -1,5 +1,5 @@
 from registry import answering_methods, evaluation_methods, retrieval_methods
-from retrieval.rag_pipeline import _get_article_from_jsonl
+from retrieval.rag_pipeline import _get_article_from_jsonl, get_online_wikipedia_content
 import jsonlines
 import json
 import sys
@@ -28,7 +28,10 @@ with jsonlines.open(config["data"]["path"]) as reader:
             true_article = item["wikititle"]
 
             if config["rag_type"] == "correct":
-                context = _get_article_from_jsonl("data/all_wiki_articles.jsonl", true_article)
+                if config.get("lang", "cs") == "en":
+                    context = get_online_wikipedia_content(true_article, lang="en")
+                else:
+                    context = _get_article_from_jsonl("data/all_wiki_articles.jsonl", true_article)
             else:
                 context = retrieve_fn(question)
             context = context[:16384]
