@@ -15,7 +15,8 @@ The system is composed of the following key parts:
    Splits articles into smaller, searchable text chunks (e.g., paragraphs or sections) and stores associated metadata (e.g., title, language).
 
 3. **Embedding & Indexing**  
-   Uses a multilingual embedding model (e.g., `intfloat/multilingual-e5`) to embed chunks. Stores both embeddings and raw text in a vector database (e.g., **Qdrant**).
+   Uses a multilingual embedding model (e.g., `intfloat/multilingual-e5`) to embed chunks.
+   Stores both embeddings and raw text in a vector database (e.g., `Qdrant` or just local `.jsonl `file).
 
 4. **Query & Retrieval**  
    Embeds user queries and retrieves top-K relevant chunks from the vector store using semantic search.
