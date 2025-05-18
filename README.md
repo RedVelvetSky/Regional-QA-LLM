@@ -6,7 +6,7 @@ This project for NPFL140 implements a **Retrieval-Augmented Generation (RAG)** p
 
 ## 🧠 Overview
 
-The system is composed of the following key components:
+The system is composed of the following key parts:
 
 1. **Wikipedia Dump Preprocessing**  
    Downloads and processes Wikipedia XML dumps for English and Czech.
@@ -20,17 +20,27 @@ The system is composed of the following key components:
 4. **Query & Retrieval**  
    Embeds user queries and retrieves top-K relevant chunks from the vector store using semantic search.
 
-5. **Prompt Construction & LLM Answering**  
-   Constructs prompts by combining the original question with retrieved context and feeds it to a multilingual LLM to generate the final answer.
+5. **Prompt Construction**  
+   Constructs prompts by combining the original question with retrieved context
 
-6. **Caching**  
-   Optional caching of retrieved results and model responses for performance optimization.
+6. **Processing Query**     
+Query is being processed by LLM and output to user-friendly GUI
+
+7. **Evaluation**     
+Answers are compared to the golden ones and evaluated using different suitable metrics like `BERTScore`,
+   `Phi4MiniLLMScore`, `chrF` and `rougeL`.
 
 ---
 
 ## 🔧 Setup
 
-TODO
+```bash
+pip install -r requirements.txt
+```
+
+```bash
+streamlit run src/app.py
+```
 
 ---
 
@@ -54,12 +64,14 @@ Example item in `data/queries/cz.dev.jsonl`:
 
 ## 📌 TODO
 
-- [x] Select models, download Wiki dataset, and configure DB
+- [x] Select models, download Wiki dataset, and configure storage place
 - [x] Preprocess Wiki database 
 - [x] Implement RAG pipeline
+- [x] Implement LLM answering to the queries
 - [ ] Fine-tune multilingual LLM on regional datasets
-- [ ] Add a friendly interface for querying
-- [ ] Add benchmarks on retrieval accuracy and answer quality
+- [x] Add a friendly interface for querying
+- [x] Add benchmarks on retrieval accuracy and answer quality
+- [x] Support for an English version of the questions and English RAG
 - [ ] Support additional languages (e.g., SK, UA)
 
 ---
