@@ -9,6 +9,9 @@ import faiss
 import torch
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModel
+from langdetect import detect, DetectorFactory
+
+DetectorFactory.seed = 0
 
 
 def load_config(config_path=None):
@@ -50,6 +53,18 @@ _model.to(_device)
 
 
 # === UTILS ===
+def detect_language(text):
+    """
+    Detects language code of the input text using langdetect.
+    Returns ISO 639-1 code: 'en', 'cs', etc.
+    """
+    try:
+        lang = detect(text)
+        return lang if lang in ("cs", "en") else "cs"
+    except Exception:
+        return "cs"
+
+
 def _encode_query(query: str) -> np.ndarray:
     """
     Encodes a query string into a normalized embedding vector using the multilingual-e5 model.
@@ -230,7 +245,9 @@ def get_online_wikipedia_content(title, lang="cs"):
     return page.get("extract", "") or ""
 
 
-def get_article_equivalent(wikititle: str, orig_lang: str="cs", target_lang: str="en"):
+def get_article_equivalent(
+    wikititle: str, orig_lang: str = "cs", target_lang: str = "en"
+):
     """
     Returns the equivalent article title in the target language.
 
@@ -256,7 +273,9 @@ def get_article_equivalent(wikititle: str, orig_lang: str="cs", target_lang: str
     }
     resp = requests.get(url, params=params).json()
     try:
-        new_title = list(resp["entities"].values())[0]["sitelinks"][target_lang + "wiki"]["title"]
+        new_title = list(resp["entities"].values())[0]["sitelinks"][
+            target_lang + "wiki"
+        ]["title"]
     except:
         return None
     return new_title
@@ -264,51 +283,53 @@ def get_article_equivalent(wikititle: str, orig_lang: str="cs", target_lang: str
 
 # === PUBLIC API ===
 def answer_query(query: str, top_k_passages: int = 3) -> dict:
-    """
-    Answers a user query using a RAG-style pipeline.
-
-    Always returns both local passage retrieval results (from FAISS and XML) and Wikipedia search fallback results.
-    Each result includes page titles, passages, scores, and full article text where available.
-
-    :param query: The user's natural language question.
-    :type query: str
-
-    :param top_k_passages: Number of top passages/articles to retrieve and return.
-    :type top_k_passages: int
-
-    :return: Dictionary with 'query', list of 'local' retrieved results, and 'wiki_fallback' results.
-    :rtype: dict
-    """
-
-    # Local RAG retrieval
+    lang = detect_language(query)
     qvec = _encode_query(query)
     top_hits = _search_faiss(qvec, top_k_passages)
-    # Always return top_k_passages (or as many as possible)
     results = []
-    for hit in top_hits:
-        # full_title, full_text = _get_page_from_xml(
-        #     WIKI_XML_PATH, hit["title"].replace("_", " ")
-        # )
-        full_title, full_text = _get_article_from_jsonl(ARTICLE_JSONL, hit["title"])
-        results.append(
-            {
-                "title": full_title,
-                "passage": hit["passage"],
-                "score": hit["score"],
-                "full_text": full_text,
-            }
-        )
+    fallback_candidates = []
 
-    # Always include Wikipedia live search fallback (top_k matches)
-    candidates = []
-    for title in _wiki_search_fallback(query, LANGUAGE, top_k=top_k_passages):
-        # Fetch directly from Wikipedia online
-        txt = get_online_wikipedia_content(title, lang=LANGUAGE)
-        if txt:
-            candidates.append({"title": title, "full_text": txt})
+    if lang == "en":
+        for hit in top_hits:
+            # We find an English equivalent using Wikidata API
+            eng_title = get_article_equivalent(
+                hit["title"], orig_lang="cs", target_lang="en"
+            )
+            if eng_title:
+                # Fetch live English Wikipedia content
+                full_text = get_online_wikipedia_content(eng_title, lang="en")
+                if full_text:
+                    results.append(
+                        {
+                            "title": eng_title,
+                            "score": hit["score"],
+                            "full_text": full_text,
+                        }
+                    )
+        # Fallback search in English Wikipedia
+        for title in _wiki_search_fallback(query, lang="en", top_k=top_k_passages):
+            txt = get_online_wikipedia_content(title, lang="en")
+            if txt:
+                fallback_candidates.append({"title": title, "full_text": txt})
+
+    else:
+        for hit in top_hits:
+            full_title, full_text = _get_article_from_jsonl(ARTICLE_JSONL, hit["title"])
+            results.append(
+                {
+                    "title": full_title,
+                    "passage": hit["passage"],
+                    "score": hit["score"],
+                    "full_text": full_text,
+                }
+            )
+        for title in _wiki_search_fallback(query, lang="cs", top_k=top_k_passages):
+            txt = get_online_wikipedia_content(title, lang="cs")
+            if txt:
+                fallback_candidates.append({"title": title, "full_text": txt})
 
     return {
         "query": query,
         "local": results,
-        "wiki_fallback": candidates,
+        "wiki_fallback": fallback_candidates,
     }
