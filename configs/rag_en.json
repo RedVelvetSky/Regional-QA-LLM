@@ -1,0 +1,12 @@
+{
+    "retrieval_method": "Vlad's RAG",
+    "answering_method": "Phi-4-mini-instruct",
+    "evaluation_method": "Method A",
+    "data": {
+        "path": "data/CZ.dev.jsonl",
+        "question_key": "question_en",
+        "answer_key": "answer_en"
+    },
+    "output_path": "outputs/yes_rag_en.jsonl",
+    "rag_type": "rag"
+}
