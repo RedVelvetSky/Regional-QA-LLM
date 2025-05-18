@@ -3,7 +3,7 @@
 #SBATCH --partition=gpu
 #SBATCH --output="logs/J-%x.out"
 #SBATCH --error="logs/J-%x.out"
-#SBATCH --gres=gpu:a100_80:1
+#SBATCH --gres=gpu:a100_40:1
 
 echo "SLURM WORKLOAD START: $(date)"
 start=$(date +%s)
