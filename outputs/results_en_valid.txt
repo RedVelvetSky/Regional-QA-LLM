@@ -1,0 +1,54 @@
+no_rag.jsonl
+Phi4MiniLLMScore: 0.356
+BERTScore_F1: 0.834
+BERTScore_P: 0.818
+BERTScore_R: 0.852
+chrF: 14.433
+rougeL_F1: 0.089
+rougeL_P: 0.169
+rougeL_R: 0.081
+Count: 458
+
+no_rag_en.jsonl
+Phi4MiniLLMScore: 0.328
+BERTScore_F1: 0.849
+BERTScore_P: 0.838
+BERTScore_R: 0.860
+chrF: 20.678
+rougeL_F1: 0.176
+rougeL_P: 0.260
+rougeL_R: 0.172
+Count: 458
+
+perfect_rag-2.jsonl
+Phi4MiniLLMScore: 0.893
+BERTScore_F1: 0.894
+BERTScore_P: 0.879
+BERTScore_R: 0.910
+chrF: 52.153
+rougeL_F1: 0.479
+rougeL_P: 0.634
+rougeL_R: 0.469
+Count: 458
+
+perfect_rag_en.jsonl
+Phi4MiniLLMScore: 0.692
+BERTScore_F1: 0.880
+BERTScore_P: 0.869
+BERTScore_R: 0.894
+chrF: 42.045
+rougeL_F1: 0.396
+rougeL_P: 0.548
+rougeL_R: 0.402
+Count: 458
+
+yes_rag.jsonl
+Phi4MiniLLMScore: 0.845
+BERTScore_F1: 0.889
+BERTScore_P: 0.875
+BERTScore_R: 0.904
+chrF: 48.935
+rougeL_F1: 0.446
+rougeL_P: 0.580
+rougeL_R: 0.441
+Count: 458
